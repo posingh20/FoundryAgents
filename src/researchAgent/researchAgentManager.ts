@@ -1,4 +1,3 @@
-import { withCustomSpan } from '@openai/agents';
 import {
   createPlannerAgentConfig,
   webSearchPlan,

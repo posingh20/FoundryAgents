@@ -1,8 +1,11 @@
-import { Agent, OpenAIChatCompletionsModel, Runner } from '@openai/agents';
+import { Agent, OpenAIChatCompletionsModel, Runner, setTracingDisabled } from '@openai/agents';
 import * as dotenv from 'dotenv';
 
 // Load environment variables from .env files
 dotenv.config();
+
+// Disable tracing globally
+setTracingDisabled(true);
 
 // Agent configuration interface
 export interface AgentConfig {
