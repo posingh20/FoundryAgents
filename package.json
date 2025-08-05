@@ -1,0 +1,36 @@
+{
+  "name": "playwright-test-generator-cli",
+  "version": "1.0.0",
+  "description": "A CLI tool to generate Playwright tests from test plans",
+  "main": "dist/index.js",
+  "bin": {
+    "playwright-gen": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "cli",
+    "playwright",
+    "testing",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@openai/agents": "^0.0.15",
+    "chalk": "^4.1.2",
+    "commander": "^11.0.0",
+    "dotenv": "^17.2.1",
+    "openai": "^5.11.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
