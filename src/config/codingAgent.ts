@@ -1,7 +1,7 @@
 import { AzureOpenAI } from 'openai';
 import { AgentConfig } from '../agent';
 import { OpenAIChatCompletionsModel } from '@openai/agents';
-import { codingTool } from '../triageTools';
+import { codingTool } from '../tools/triageTools';
 
 // Function to create a default coding agent configuration
 export function createCodingAgentConfig(): AgentConfig {

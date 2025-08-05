@@ -1,8 +1,5 @@
 import { Agent, OpenAIChatCompletionsModel, Runner } from '@openai/agents';
-import { AzureOpenAI } from 'openai';
 import * as dotenv from 'dotenv';
-import { weatherTool } from './weatherTool';
-import { weatherPrompt } from './prompts';
 
 // Load environment variables from .env files
 dotenv.config();

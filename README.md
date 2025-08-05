@@ -22,7 +22,7 @@ Agent CLI is a TypeScript-based tool that provides multiple specialized AI agent
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd agent-cli
+cd FoundryAgents
 ```
 
 2. Install dependencies:
@@ -40,6 +40,7 @@ AZURE_API_KEY=your-api-key
 AZURE_MODEL_NAME=your-model-deployment-name
 AZURE_API_VERSION=2024-02-01
 OPENWEATHER_API_KEY=your-openweather-api-key
+AZURE_MODEL_NAME_O4_MINI=your-model-deployment-name
 ```
 
 ### Required Environment Variables
@@ -51,6 +52,7 @@ OPENWEATHER_API_KEY=your-openweather-api-key
 | `AZURE_MODEL_NAME` | Your Azure OpenAI model deployment name |
 | `AZURE_API_VERSION` | Azure OpenAI API version (default: 2024-02-01) |
 | `OPENWEATHER_API_KEY` | OpenWeatherMap API key for weather data |
+| `AZURE_MODEL_NAME_O4_MINI` | Your Azure O4 Mini deployment name |
 
 ## Usage
 
@@ -145,14 +147,3 @@ Weather information is provided by the OpenWeatherMap Current Weather API (free 
 - Humidity, pressure, and visibility
 - Wind speed and direction
 - Sunrise and sunset times
-
-### AI Models
-
-The CLI integrates with Azure OpenAI Service and uses different models optimized for specific tasks:
-
-- **GPT models** for natural language understanding and weather assistance
-- **Specialized models** for code generation and documentation
-
-## License
-
-MIT License - see the LICENSE file for details.

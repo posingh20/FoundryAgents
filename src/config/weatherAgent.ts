@@ -1,8 +1,18 @@
 import { AzureOpenAI } from 'openai';
 import { AgentConfig } from '../agent';
 import { OpenAIChatCompletionsModel } from '@openai/agents';
-import { weatherPrompt } from '../prompts';
-import { weatherTool } from '../weatherTool';
+import { weatherTool } from '../tools/weatherTool';
+
+export const weatherPrompt = `You are a helpful weather assistant. Use the get_weather tool to provide weather information for cities when asked. 
+
+      The tool provides current weather conditions including:
+      - Temperature and feels-like temperature
+      - Weather conditions and description
+      - Humidity, wind speed, and pressure
+      - Cloud cover and visibility
+      - Sunrise and sunset times
+
+      Be friendly and informative in your responses. When users ask about weather, always use the tool to get real-time data.`
 
 
 // Function to create a default weather agent configuration

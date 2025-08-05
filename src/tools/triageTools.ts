@@ -1,7 +1,7 @@
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { AzureOpenAI } from 'openai';
-import { AgentConfig, runAgent } from './agent';
+import { AgentConfig, runAgent } from '../agent';
 import { OpenAIChatCompletionsModel } from '@openai/agents';
 
 // Doc tool using Agent instead of direct LLM calls

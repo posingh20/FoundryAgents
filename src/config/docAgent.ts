@@ -1,7 +1,7 @@
 import { AzureOpenAI } from 'openai';
 import { AgentConfig } from '../agent';
 import { OpenAIChatCompletionsModel } from '@openai/agents';
-import { docTool } from '../triageTools';
+import { docTool } from '../tools/triageTools';
 
 // Function to create a default documentation agent configuration
 export function createDocAgentConfig(): AgentConfig {
