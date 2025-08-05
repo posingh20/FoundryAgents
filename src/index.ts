@@ -2,13 +2,11 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import * as fs from 'fs';
-import * as path from 'path';
 import * as readline from 'readline';
 import { runAgent } from './agent';
 import { createWeatherAgentConfig } from './config/weatherAgent';
 import { createTriageAgentConfig } from './config/triageAgent';
-import { ResearchManager } from './config/researchAgentManager';
+import { ResearchManager } from './researchAgent/researchAgentManager';
 
 const program = new Command();
 
@@ -95,10 +93,8 @@ async function handleTriageAgent(): Promise<void> {
   console.log(chalk.cyan('This agent can help with both code generation and documentation tasks:'));
   console.log(chalk.gray('• Code generation: "Create a TypeScript function to sort an array"'));
   console.log(chalk.gray('• Documentation: "Write API documentation for a REST endpoint"'));
-  console.log(chalk.gray('• Tutorials: "Create a tutorial on React hooks"'));
-  console.log(chalk.gray('• Guides: "Write a guide for setting up a Node.js project"\n'));
   
-  const userTask = await askQuestion(chalk.blue('What would you like help with? '));
+  let userTask = await askQuestion(chalk.blue('What would you like help with? '));
   
   if (!userTask) {
     console.log(chalk.yellow('\n⚠️  No task provided, returning to main menu.'));
@@ -107,20 +103,35 @@ async function handleTriageAgent(): Promise<void> {
     return;
   }
   
-  console.log(chalk.yellow('\n⏳ Please wait, agent is working...'));
+  // Create the triage agent configuration once
+  const agentConfig = createTriageAgentConfig();
   
-  try {
-    // Create the triage agent configuration
-    const agentConfig = createTriageAgentConfig();
-    const result = await runAgent(agentConfig, userTask);
-    console.log(chalk.green('\n✅ Agent completed:'));
-    console.log(chalk.white(result));
-  } catch (error) {
-    console.log(chalk.red('\n❌ Agent failed:'));
-    console.log(chalk.red(error instanceof Error ? error.message : 'Unknown error'));
+  while(true) {
+    console.log(chalk.yellow('\n⏳ Please wait, agent is working...'));
+    
+    try {
+      const result = await runAgent(agentConfig, userTask);
+      console.log(chalk.green('\n✅ Agent completed:'));
+      console.log(chalk.white(result));
+    } catch (error) {
+      console.log(chalk.red('\n❌ Agent failed:'));
+      console.log(chalk.red(error instanceof Error ? error.message : 'Unknown error'));
+    }
+    
+    // Ask for next task or exit
+    console.log(chalk.gray('\nOptions:'));
+    console.log(chalk.gray('• Enter a new task to continue'));
+    console.log(chalk.gray('• Type "exit" or "quit" to return to main menu'));
+    console.log(chalk.gray('• Press Enter to return to main menu\n'));
+    
+    userTask = await askQuestion(chalk.blue('What would you like help with next? '));
+    
+    // Check if user wants to exit
+    if (!userTask || userTask.toLowerCase() === 'exit' || userTask.toLowerCase() === 'quit') {
+      break;
+    }
   }
   
-  await askQuestion(chalk.gray('\nPress Enter to return to main menu...'));
   await showMainMenu();
 }
 
