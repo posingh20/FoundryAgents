@@ -8,6 +8,7 @@ import * as readline from 'readline';
 import { runAgent } from './agent';
 import { createWeatherAgentConfig } from './config/weatherAgent';
 import { createTriageAgentConfig } from './config/triageAgent';
+import { ResearchManager } from './config/researchAgentManager';
 
 const program = new Command();
 
@@ -31,9 +32,10 @@ async function showMainMenu(): Promise<void> {
   console.log(chalk.cyan('Choose an option:'));
   console.log(chalk.white('1. ') + chalk.green('Run weather agent'));
   console.log(chalk.white('2. ') + chalk.yellow('Run triage agent'));
-  console.log(chalk.white('3. ') + chalk.gray('Exit\n'));
+  console.log(chalk.white('3. ') + chalk.magenta('Run research agent'));
+  console.log(chalk.white('4. ') + chalk.gray('Exit\n'));
 
-  const choice = await askQuestion(chalk.blue('Enter your choice (1-3): '));
+  const choice = await askQuestion(chalk.blue('Enter your choice (1-4): '));
 
   switch (choice) {
     case '1':
@@ -43,12 +45,15 @@ async function showMainMenu(): Promise<void> {
       await handleTriageAgent();
       break;
     case '3':
+      await handleResearchAgent();
+      break;
+    case '4':
       console.log(chalk.green('\n👋 Goodbye!'));
       rl.close();
       process.exit(0);
       break;
     default:
-      console.log(chalk.red('\n❌ Invalid choice. Please enter 1-3.'));
+      console.log(chalk.red('\n❌ Invalid choice. Please enter 1-4.'));
       await askQuestion(chalk.gray('Press Enter to continue...'));
       await showMainMenu();
   }
@@ -119,6 +124,40 @@ async function handleTriageAgent(): Promise<void> {
   await showMainMenu();
 }
 
+async function handleResearchAgent(): Promise<void> {
+  console.log(chalk.magenta('\n🔍 Research Agent\n'));
+  console.log(chalk.cyan('This agent performs comprehensive research on any topic:'));
+  console.log(chalk.gray('• "Research the latest trends in artificial intelligence"'));
+  console.log(chalk.gray('• "What are the current developments in renewable energy?"'));
+  console.log(chalk.gray('• "Analyze the impact of remote work on productivity"'));
+  console.log(chalk.gray('• "Research best practices for cloud security"\n'));
+  
+  const userQuery = await askQuestion(chalk.blue('What would you like me to research? '));
+  
+  if (!userQuery) {
+    console.log(chalk.yellow('\n⚠️  No research query provided, returning to main menu.'));
+    await askQuestion(chalk.gray('Press Enter to continue...'));
+    await showMainMenu();
+    return;
+  }
+  
+  console.log(chalk.yellow('\n⏳ Please wait, research agent is working...'));
+  console.log(chalk.cyan('This may take a few minutes as the agent performs web searches and analysis.\n'));
+  
+  try {
+    // Create and run the research manager
+    const researchManager = new ResearchManager();
+    await researchManager.run(userQuery);
+    console.log(chalk.green('\n✅ Research completed successfully!'));
+  } catch (error) {
+    console.log(chalk.red('\n❌ Research failed:'));
+    console.log(chalk.red(error instanceof Error ? error.message : 'Unknown error'));
+  }
+  
+  await askQuestion(chalk.gray('\nPress Enter to return to main menu...'));
+  await showMainMenu();
+}
+
 // Renamed the original function for clarity
 async function handleRunAgent(): Promise<void> {
   await handleWeatherAgent();
@@ -126,7 +165,7 @@ async function handleRunAgent(): Promise<void> {
 
 program
   .name('agent-cli')
-  .description('Multi-Agent CLI - Weather and Triage Agents')
+  .description('Multi-Agent CLI - Weather, Triage, and Research Agents')
   .version('1.0.0');
 
 // If no arguments provided, show interactive menu
@@ -185,6 +224,39 @@ if (process.argv.length === 2) {
         const result = await runAgent(agentConfig, task);
         console.log(chalk.green('\n✅ Agent completed:'));
         console.log(chalk.white(result));
+      } catch (error) {
+        console.log(chalk.red('❌ Error: ' + (error instanceof Error ? error.message : 'Unknown error')));
+      }
+      rl.close();
+    });
+
+  program
+    .command('research')
+    .description('Run the research agent for comprehensive topic research')
+    .option('-q, --query <query>', 'Research query to investigate')
+    .action(async (options) => {
+      try {
+        let query = options.query;
+        if (!query) {
+          console.log(chalk.magenta('🔍 Research Agent'));
+          console.log(chalk.cyan('\nThis agent performs comprehensive research on any topic.'));
+          console.log(chalk.gray('Examples: "AI trends" or "renewable energy developments"'));
+          query = await askQuestion(chalk.blue('\nWhat would you like me to research? '));
+        }
+        
+        if (!query) {
+          console.log(chalk.yellow('No research query provided. Exiting.'));
+          rl.close();
+          return;
+        }
+        
+        console.log(chalk.yellow('⏳ Please wait, research agent is working...'));
+        console.log(chalk.cyan('This may take a few minutes as the agent performs web searches and analysis.\n'));
+        
+        // Create and run the research manager
+        const researchManager = new ResearchManager();
+        await researchManager.run(query);
+        console.log(chalk.green('\n✅ Research completed successfully!'));
       } catch (error) {
         console.log(chalk.red('❌ Error: ' + (error instanceof Error ? error.message : 'Unknown error')));
       }

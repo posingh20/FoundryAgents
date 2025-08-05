@@ -10,6 +10,10 @@ Agent CLI is a TypeScript-based tool that provides multiple specialized AI agent
 - **Triage Agent**: Intelligent task routing that can handle both code generation and documentation tasks
   - Routes to specialized coding agent for programming tasks  
   - Routes to documentation agent for writing guides, tutorials, and docs
+- **Research Agent**: Comprehensive research assistant that performs multi-step web research and generates detailed reports
+  - Plans and executes multiple web searches
+  - Synthesizes findings into structured reports
+  - Provides follow-up research suggestions
 
 ## Prerequisites
 
@@ -75,6 +79,12 @@ npx ts-node src/index.ts triage
 
 # Triage agent with direct task
 npx ts-node src/index.ts triage --task "Create a TypeScript function to sort an array"
+
+# Research agent with interactive prompt
+npx ts-node src/index.ts research
+
+# Research agent with direct query
+npx ts-node src/index.ts research --query "Latest trends in artificial intelligence"
 ```
 
 ### Production Mode
@@ -127,13 +137,37 @@ npx ts-node src/index.ts triage --task "Create a tutorial on React hooks"
 npx ts-node src/index.ts triage --task "Write a guide for setting up a Node.js project"
 ```
 
+#### Research Agent
+
+Perform comprehensive research on any topic:
+
+```bash
+# Interactive research prompt
+npx ts-node src/index.ts research
+
+# Research query examples
+npx ts-node src/index.ts research --query "Latest trends in artificial intelligence"
+npx ts-node src/index.ts research --query "Climate change impact on agriculture"
+npx ts-node src/index.ts research --query "Blockchain technology applications in healthcare"
+npx ts-node src/index.ts research --query "Remote work productivity best practices"
+npx ts-node src/index.ts research --query "Renewable energy market developments"
+npx ts-node src/index.ts research --query "Cybersecurity threats in 2025"
+```
+
+The research agent will:
+- Plan and execute multiple targeted web searches
+- Gather information from various sources
+- Synthesize findings into a comprehensive markdown report (5-10 pages, 1000+ words)
+- Provide follow-up research questions for further investigation
+
 ### Architecture
 
 The CLI uses the `@openai/agents` framework with Azure OpenAI models. Key components:
 
 - **Agent Runner**: Core engine that executes agents with specified configurations
-- **Tools**: Specialized functions for weather data and task routing
+- **Tools**: Specialized functions for weather data, task routing, and web search
 - **Handoff System**: Intelligent routing between specialized agents
+- **Research Pipeline**: Multi-agent research workflow with planning, searching, and synthesis
 - **Interactive Interface**: User-friendly CLI with colored output and prompts
 
 ## API Integration
@@ -147,3 +181,12 @@ Weather information is provided by the OpenWeatherMap Current Weather API (free 
 - Humidity, pressure, and visibility
 - Wind speed and direction
 - Sunrise and sunset times
+
+### Research Capabilities
+
+The research agent leverages web search capabilities to:
+
+- Perform targeted searches across multiple sources
+- Extract and summarize relevant information
+- Generate structured, comprehensive reports
+- Suggest related topics for further exploration
